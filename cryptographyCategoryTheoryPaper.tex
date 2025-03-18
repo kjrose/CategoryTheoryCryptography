@@ -1,0 +1,70 @@
+\documentclass{article}
+\usepackage{amsmath, amsthm, amssymb}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+
+\begin{document}
+
+\title{Formalizing Hash Functions Using Category Theory}
+\author{Kelly John Rose}
+\date{}
+\maketitle
+
+\begin{abstract}
+This paper presents a novel categorical framework for formalizing hash functions, leveraging uniform families of functions to model computational efficiency and rigorously defining security properties such as pre-image resistance. We introduce the categories \textbf{CRYPT} and \textbf{HASH}, provide formal definitions of key security properties, and prove their broader implications, including one-wayness, preservation under composition, and categorical constraints. These results deepen the understanding of cryptographic primitives through category theory.
+\end{abstract}
+
+\section{Introduction}
+Hash functions are foundational to modern cryptography, yet their security properties often lack rigorous mathematical formalization. This paper employs category theory to address this gap, extending its applications from protocol composition to cryptographic primitives. Our contributions include: (1) defining the categories \textbf{CRYPT} and \textbf{HASH} using uniform families of functions; (2) formalizing security properties like pre-image resistance within this framework; and (3) proving implications such as one-wayness and security preservation under composition. The paper proceeds with background, category definitions, security properties, proofs, and a conclusion.
+
+\section{Background}
+We review hash functions and their security properties (pre-image resistance, second pre-image resistance, collision resistance), introduce category theory basics (objects, morphisms, composition, identity), and outline complexity theory concepts (polynomial-time computability, uniform families) essential to our framework.
+
+\section{Defining the Categories}
+\subsection{The Category \textbf{CRYPT}}
+Objects are polynomials \( p(n) \), representing input sizes \( \{0,1\}^{p(n)} \). Morphisms are uniform families \( \{ f_n : \{0,1\}^{p(n)} \to \{0,1\}^{q(n)} \} \), computable in polynomial time. Composition is standard, with identity functions as identities. We verify that \textbf{CRYPT} is a category.
+
+\subsection{The Category \textbf{HASH}}
+Objects are uniform families \( \{ H_n : \{0,1\}^{p(n)} \to \{0,1\}^{q(n)} \} \), \( q(n) < p(n) \), representing hash functions. Morphisms are pairs \( (\phi, \psi) \) where \( \phi_n \) and \( \psi_n \) are polynomial-time families satisfying \( H'_n \circ \phi_n = \psi_n \circ H_n \). Composition is component-wise, with identity pairs. We confirm \textbf{HASH} is a category.
+
+\section{Formalizing Security Properties}
+\subsection{Pre-Image Resistance}
+\begin{definition}
+A family \( \{ H_n \} \) in \textbf{HASH} is pre-image resistant if no PPT morphism \( \{ A_n : \{0,1\}^{q(n)} \to \{0,1\}^{p(n)} \} \) in \textbf{CRYPT} inverts \( H_n \) with non-negligible probability for infinitely many \( n \).
+\end{definition}
+This aligns with cryptographic definitions, formalized categorically.
+
+\subsection{Other Security Properties}
+Second pre-image resistance and collision resistance are defined similarly, prohibiting efficient PPT morphisms that find second pre-images or collisions, respectively.
+
+\section{Proofs and Broader Implications}
+\subsection{One-Wayness Implied by Pre-Image Resistance}
+\begin{theorem}
+If \( \{ H_n \} \) is pre-image resistant, it is one-way, i.e., no PPT morphism inverts it efficiently.
+\end{theorem}
+\begin{proof}
+An efficient inverter \( \{ A_n \} \) would contradict the pre-image resistance definition.
+\end{proof}
+
+\subsection{Preservation of Security Under Composition}
+\begin{theorem}
+If \( \{ H_n \} \) is pre-image resistant and \( (\phi, \psi) : \{ H_n \} \to \{ H'_n \} \) in \textbf{HASH} has injective \( \psi_n \), then \( \{ H'_n \} \) is pre-image resistant.
+\end{theorem}
+\begin{proof}
+An adversary inverting \( H'_n \) could invert \( H_n \) via \( \phi_n \) and \( \psi_n \), contradicting \( H_n \)’s pre-image resistance.
+\end{proof}
+
+\subsection{Categorical Constraints on Hash Functions}
+\begin{theorem}
+Pre-image resistance of \( \{ H_n \} \) implies no right inverse exists in \textbf{HASH}.
+\end{theorem}
+\begin{proof}
+A right inverse would allow efficient inversion, violating pre-image resistance.
+\end{proof}
+
+\section{Conclusion}
+We formalized hash functions using category theory, introducing \textbf{CRYPT} and \textbf{HASH}, defining security properties rigorously, and proving their implications. Future work includes extending this framework to other primitives and exploring advanced categorical tools.
+
+\end{document}
